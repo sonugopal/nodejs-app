@@ -57,6 +57,7 @@ app.post('/project/delete/:id',project.doDelete);
 app.get('/project/new',project.create);
 app.post('/project/new',project.doCreate);
 app.get('/project/view/:id',project.viewProjects);
+app.get('/project/details/:id',project.projectDetails);
 
 
 app.use(function(req, res, next) {

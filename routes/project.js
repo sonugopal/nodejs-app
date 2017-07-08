@@ -56,11 +56,44 @@ module.exports.viewProjects=function (req, res) {
            "createdBy":req.params.id
        },function (err,project) {
            if (!err){
-               console.log(project);
-               res.render("view-projects",{project:project});
+               if (project) {
+                   console.log(project);
+                   res.render("view-projects", {project: project});
+
+               }
+               else{
+                   console.log("No projects");
+                   res.redirect("/project?404=error");
+               }
+
+           }
+           else
+           {
+              console.log("finding project eror");
+              res.redirect("/project?404=error");
            }
        })
     }
+    else{
+        console.log("id is invalid");
+        console.log("/project?404=error");
+    }
 };
+module.exports.projectDetails=function (req,res) {
+    console.log(req.params.id);
+    if (req.params.id){
+        Project.findOne({_id:req.params.id},function (err,project) {
+            if (!err){
+                console.log(project);
+                res.render("project-details",{project:project});
+            }
+
+            else {
+                res.redirect("/project?404=error");
+            }
+        })
+    }
+    else res.redirect("/project?404=error");
+}
 
 
