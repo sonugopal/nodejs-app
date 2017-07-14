@@ -1,0 +1,12 @@
+<h1>Edit Project</h1>
+<br>
+<form method="post" action="/project/edit/{{project._id}}">
+    Project Name:<input type="text" id="ProjectName" name="ProjectName" value="{{project.projectName}}"><br>
+
+    <br>Task:<input type="text" name="Task" id="Task" value="{{project.task}}"><br>
+    Contributors:<input type="text" name="Contributors" id="Contributors" value="{{project.contributors}}">
+    Created on:<input type="date" name="CreatedOn" id="CreatedOn" value="{{project.createdOn}}">
+    Modified On:<input type="date" name="ModifiedOn" id="ModifiedOn" value="{{project.modifiedOn}}">
+    <button type="submit">Submit</button>
+
+</form>

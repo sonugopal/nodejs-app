@@ -23,6 +23,8 @@ router.get('/', function(req, res, next) {
 module.exports = router;
 
 module.exports.create=function (req,res) {
+    if (req.session.loggedIn!=true)
+        res.redirect("/login");
     res.render('create-project');
 };
 module.exports.doCreate=function (req,res) {
@@ -49,6 +51,8 @@ module.exports.doCreate=function (req,res) {
     );
 };
 module.exports.viewProjects=function (req, res) {
+    if (req.session.loggedIn!=true)
+        res.redirect("/login");
     console.log(req.params.id);
 
     if (req.params.id){
@@ -80,6 +84,8 @@ module.exports.viewProjects=function (req, res) {
     }
 };
 module.exports.projectDetails=function (req,res) {
+    if (req.session.loggedIn!=true)
+        res.redirect("/login");
     console.log(req.params.id);
     if (req.params.id){
         Project.findOne({_id:req.params.id},function (err,project) {
@@ -95,5 +101,72 @@ module.exports.projectDetails=function (req,res) {
     }
     else res.redirect("/project?404=error");
 }
+module.exports.edit=function (req,res) {
+    if (req.session.loggedIn!=true)
+        res.redirect("/login");
+    if (req.params.id){
+        Project.findOne({
+            _id:req.params.id
+        },function (err,project) {
+            if (!err){
+                res.render("edit-project",{project:project});
+            }
+            else
+            {
+                console.log("err");
+                res.redirect("/project?error=edit")
+            }
+        });
+    }
+    else
+        console.log("invalid id");
+};
+module.exports.doEdit=function (req,res) {
+    if(req.params.id){
+        Project.findOne({_id:req.params.id},
+        function (err,project) {
+            doEditSave(req,res,err,project);
+        });
+    }
+};
+var doEditSave=function (req,res,err,project) {
+    if(err){
+        console.log("error on finding");
+        res.redirect("/project?error=finding");
+    }
+    else{
+        project.projectName=req.body.ProjectName;
+        project.task=req.body.Task;
+        project.contributors=req.body.Contributors;
+        project.createdOn=req.body.CreatedOn;
+        project.modifiedOn=req.body.ModifiedOn;
+        project.save(function (err,project) {
+            onEditSave(req,res,err,project);
+        });
+    }
+};
+var onEditSave=function (req,res,err,project) {
+    if(err){
+        console.log("saving error");
+        res.redirect("/project?error=saving");
+    }
+    else{
+        res.redirect("/project/details/"+project._id);
+    }
+};
+module.exports.doDelete=function (req,res) {
+    if (req.params.id){
+        Project.findByIdAndRemove(req.params.id,function (err,project) {
+            if(err){
+                console.log("deleting error");
+                res.redirect("/project?error=deleting");
+            }
+            else{
+                console.log("project deleted");
+                res.redirect("/project/view/"+req.session.user._id);
+            }
+        });
+    }
+};
 
 

@@ -38,6 +38,11 @@ app.get('/user/new',user.create);
 app.post('/user/new',user.doCreate);
 app.get('/login',user.login);
 app.post('/login',user.doLogin);
+app.get('/user/view',user.view);
+app.get('/user/edit',user.edit);
+app.post('/user/changepassword',user.changePassword);
+app.get('/user/delete',user.delete);
+app.get('/logout',user.logout);
 /*app.get('/user/edit',user.edit);
 app.post('/users/edit',user.doEdit);
 app.get('/user/delete',user.confirmDelete);
@@ -58,6 +63,9 @@ app.get('/project/new',project.create);
 app.post('/project/new',project.doCreate);
 app.get('/project/view/:id',project.viewProjects);
 app.get('/project/details/:id',project.projectDetails);
+app.get('/project/edit/:id',project.edit);
+app.post('/project/edit/:id',project.doEdit);
+app.get('/project/delete/:id',project.doDelete);
 
 
 app.use(function(req, res, next) {

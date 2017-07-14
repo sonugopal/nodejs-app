@@ -2,6 +2,9 @@
 <br>
 <h3>Name: {{project.projectName}}</h3>
 <h3>Contributors: {{project.contributors}}</h3>
-<h3>Tast: {{project.task}}</h3>
+<h3>Task: {{project.task}}</h3>
 <h3>Created On: {{project.createdOn}}</h3>
 <h3>Modified on: {{project.modifiedOn}}</h3>
+<br>
+<a href="/project/edit/{{project._id}}"><button>Edit</button></a>
+<a href="/project/delete/{{project._id}}"><button>Delete</button></a>
